@@ -1,4 +1,4 @@
-#include "message.h"
+#include "serial_communicator/message.h"
 
 #include <endian.h>
 #include <cstring>
