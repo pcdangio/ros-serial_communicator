@@ -8,10 +8,13 @@ INCLUDEPATH += \
     include
 
 SOURCES += \
+    src/inbound.cpp \
     src/message.cpp
 
 HEADERS += \
-    include/message.h
+    include/serial_communicator/message.h \
+    include/serial_communicator/message_status.h \
+    include/serial_communicator/utility/inbound.h
 
 DISTFILES += \
     CMakeLists.txt \
