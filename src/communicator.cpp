@@ -6,7 +6,7 @@ using namespace serial_communicator;
 communicator::communicator(std::string port, unsigned int baud)
 {
     // Set up the serial port.
-    communicator::m_serial_port = new serial::Serial(port, baud, serial::Timeout::simpleTimeout(30));
+    communicator::m_serial_port = new serial::Serial(port, 9600, serial::Timeout::simpleTimeout(30));
     communicator::m_serial_port->flush();
 
     // Initialize parameters to default values.
@@ -555,8 +555,24 @@ void communicator::tx(unsigned char *buffer, unsigned int length)
         communicator::m_serial_port->write(buffer, length);
     }
 }
+#include <iostream>
 bool communicator::rx(unsigned char* buffer, unsigned int length)
 {
+    unsigned long b_available = communicator::m_serial_port->available();
+    if(b_available == 0)
+    {
+        return false;
+    }
+    unsigned char* buf = new unsigned char[b_available];
+    unsigned long b_read = communicator::m_serial_port->read(buf, b_available);
+    for(int i = 0; i < b_available; i++)
+    {
+        std::cout << std::hex << static_cast<unsigned int>(buf[i]) << "\t";
+    }
+    std::cout << std::endl;
+    delete [] buf;
+    return false;
+
     // Block read until length bytes have been satisfied after escapements.
     unsigned int current_length = 0;
     while(current_length < length)
