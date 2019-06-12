@@ -4,14 +4,14 @@ using namespace serial_communicator;
 using namespace serial_communicator::utility;
 
 // CONSTRUCTORS
-inbound::inbound(const message* message, unsigned int sequence_number)
+inbound::inbound(message* message, unsigned int sequence_number)
 {
     inbound::m_message = message;
     inbound::m_sequence_number = sequence_number;
 }
 
 // PROPERTIES
-const message* inbound::p_message() const
+message* inbound::p_message() const
 {
     return inbound::m_message;
 }

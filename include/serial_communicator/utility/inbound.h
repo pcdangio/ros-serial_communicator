@@ -21,15 +21,16 @@ public:
     /// \brief inbound Creates a new inbound instance.
     /// \param message A pointer to the received message.
     /// \param sequence_number The originating sequence number of the received message.
+    /// \details This instance takes ownership of the message pointer.
     ///
-    inbound(const message* message, unsigned int sequence_number);
+    inbound(message* message, unsigned int sequence_number);
 
     // PROPERTIES
     ///
     /// \brief p_message Gets a pointer to the received message.
     /// \return A pointer to the received message.
     ///
-    const message* p_message() const;
+    message* p_message() const;
     ///
     /// \brief p_sequence_number Gets the originiating sequence number of the received message.
     /// \return The originating sequence number of the received message.
@@ -40,7 +41,7 @@ private:
     ///
     /// \brief m_message Stores a pointer to the recieved message.
     ///
-    const message* m_message;
+    message* m_message;
     ///
     /// \brief m_sequence_number Stores the originating sequence number of the received message.
     ///
