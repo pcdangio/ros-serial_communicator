@@ -6,7 +6,7 @@ using namespace serial_communicator;
 communicator::communicator(std::string port, unsigned int baud)
 {
     // Set up the serial port.
-    communicator::m_serial_port = new serial::Serial(port, 9600, serial::Timeout::simpleTimeout(30));
+    communicator::m_serial_port = new serial::Serial(port, 115200, serial::Timeout::simpleTimeout(30), serial::bytesize_t::eightbits, serial::parity_t::parity_none, serial::stopbits_t::stopbits_two, serial::flowcontrol_t::flowcontrol_none);
     communicator::m_serial_port->flush();
 
     // Initialize parameters to default values.
