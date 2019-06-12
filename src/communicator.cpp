@@ -510,7 +510,8 @@ void communicator::tx(unsigned char *buffer, unsigned int length)
 {
     // Check if escapes are needed.
     unsigned int n_escapes = 0;
-    for(unsigned int i = 0; i < length; i++)
+    // Only check after the header.
+    for(unsigned int i = 1; i < length; i++)
     {
         if(buffer[i] == communicator::m_header_byte || buffer[i] == communicator::m_escape_byte)
         {
@@ -524,7 +525,10 @@ void communicator::tx(unsigned char *buffer, unsigned int length)
         // Escapes needed.
         unsigned char* esc_buffer = new unsigned char[length + n_escapes];
         unsigned int esc_write_position = 0;
-        for(unsigned int i = 0; i < length; i++)
+        // Copy the header byte first since it should not be escaped.
+        esc_buffer[esc_write_position++] = buffer[0];
+        // Only check after the header.
+        for(unsigned int i = 1; i < length; i++)
         {
             if(buffer[i] == communicator::m_header_byte || buffer[i] == communicator::m_escape_byte)
             {
