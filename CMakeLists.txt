@@ -123,6 +123,8 @@ include_directories(
 add_library(${PROJECT_NAME}
   src/message.cpp
   src/inbound.cpp
+  src/outbound.cpp
+  src/communicator.cpp
 )
 
 ## Add cmake target dependencies of the library
