@@ -8,11 +8,13 @@ INCLUDEPATH += \
     include
 
 SOURCES += \
+    src/communicator.cpp \
     src/inbound.cpp \
     src/message.cpp \
     src/outbound.cpp
 
 HEADERS += \
+    include/serial_communicator/communicator.h \
     include/serial_communicator/message.h \
     include/serial_communicator/message_status.h \
     include/serial_communicator/utility/inbound.h \
