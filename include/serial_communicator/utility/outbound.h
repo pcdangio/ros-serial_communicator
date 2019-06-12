@@ -35,10 +35,10 @@ public:
     ///
     void mark_transmitted();
     ///
-    /// \brief update_tracker Updates the tracker to a new message status.
+    /// \brief update_status Updates the internal status and tracker to a new message status.
     /// \param status The new status to set.
     ///
-    void update_tracker(message_status status);
+    void update_status(message_status status);
     ///
     /// \brief timeout_elapsed Checks if a specified timeout has elapsed since the message was last transmitted.
     /// \param timeout The length of the timeout period in milliseconds.
@@ -73,6 +73,11 @@ public:
     /// \return The total number of transmissions of the message.
     ///
     unsigned char p_n_transmissions() const;
+    ///
+    /// \brief p_status Gets the current status of the message.
+    /// \return The current status of the message.
+    ///
+    message_status p_status() const;
 
 private:
     // VARIABLES
@@ -88,6 +93,10 @@ private:
     /// \brief m_receipt_required Stores the flag indicating if receipt is required for the outgoing message.
     ///
     bool m_receipt_required;
+    ///
+    /// \brief m_status Stores the current status of the message.
+    ///
+    message_status m_status;
     ///
     /// \brief m_tracker Stores a pointer to the tracker for external observation of the outgoing message's status.
     ///

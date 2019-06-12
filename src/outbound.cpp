@@ -15,8 +15,8 @@ outbound::outbound(message* message, unsigned int sequence_number, bool receipt_
     outbound::m_transmit_timestamp = std::chrono::high_resolution_clock::now();
     outbound::m_n_transmissions = 0;
 
-    // Set tracker status to queued.
-    outbound::update_tracker(message_status::QUEUED);
+    // Set status to queued.
+    outbound::update_status(message_status::QUEUED);
 }
 outbound::~outbound()
 {
@@ -31,8 +31,11 @@ void outbound::mark_transmitted()
     // Increment transmission counter.
     outbound::m_n_transmissions++;
 }
-void outbound::update_tracker(message_status status)
+void outbound::update_status(message_status status)
 {
+    // Update internal status.
+    outbound::m_status = status;
+    // Update tracker if available.
     if(outbound::m_tracker)
     {
         *outbound::m_tracker = status;
@@ -64,4 +67,8 @@ bool outbound::p_receipt_required() const
 unsigned char outbound::p_n_transmissions() const
 {
     return outbound::m_n_transmissions;
+}
+message_status outbound::p_status() const
+{
+    return outbound::m_status;
 }
