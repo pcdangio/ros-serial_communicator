@@ -3,10 +3,14 @@
 using namespace serial_communicator;
 
 // CONSTRUCTORS
-communicator::communicator(std::string port, unsigned int baud)
+communicator::communicator(std::string port, unsigned int baud, unsigned int data_bits, unsigned int parity_bits, unsigned int stop_bits)
 {
     // Set up the serial port.
-    communicator::m_serial_port = new serial::Serial(port, 115200, serial::Timeout::simpleTimeout(30), serial::bytesize_t::eightbits, serial::parity_t::parity_none, serial::stopbits_t::stopbits_two, serial::flowcontrol_t::flowcontrol_none);
+    communicator::m_serial_port = new serial::Serial(port, baud, serial::Timeout::simpleTimeout(30),
+                                                     static_cast<serial::bytesize_t>(data_bits),
+                                                     static_cast<serial::parity_t>(parity_bits),
+                                                     static_cast<serial::stopbits_t>(stop_bits),
+                                                     serial::flowcontrol_t::flowcontrol_none);
     communicator::m_serial_port->flush();
 
     // Initialize parameters to default values.
@@ -555,24 +559,8 @@ void communicator::tx(unsigned char *buffer, unsigned int length)
         communicator::m_serial_port->write(buffer, length);
     }
 }
-#include <iostream>
 bool communicator::rx(unsigned char* buffer, unsigned int length)
 {
-    unsigned long b_available = communicator::m_serial_port->available();
-    if(b_available == 0)
-    {
-        return false;
-    }
-    unsigned char* buf = new unsigned char[b_available];
-    unsigned long b_read = communicator::m_serial_port->read(buf, b_available);
-    for(int i = 0; i < b_available; i++)
-    {
-        std::cout << std::hex << static_cast<unsigned int>(buf[i]) << "\t";
-    }
-    std::cout << std::endl;
-    delete [] buf;
-    return false;
-
     // Block read until length bytes have been satisfied after escapements.
     unsigned int current_length = 0;
     while(current_length < length)
@@ -587,18 +575,21 @@ bool communicator::rx(unsigned char* buffer, unsigned int length)
             return false;
         }
         // Read through the temporary buffer and extract bytes into the actual buffer.
+        bool unescape_next = false;
         for(unsigned int i = 0; i < remaining_length; i++)
         {
             if(temp_buffer[i] == communicator::m_escape_byte)
             {
-                // Unescape the next byte and copy.
-                // Increment i again here to skip over the copied byte on the next iteration.
-                buffer[current_length++] = temp_buffer[i++] + 1;
+                // Mark the escape flag.
+                unescape_next = true;
             }
             else
             {
                 // Copy byte.
-                buffer[current_length++] = temp_buffer[i];
+                // Unescaping is adding 1 to the value. Can use cast of unescape_next bool.
+                buffer[current_length++] = temp_buffer[i] + static_cast<unsigned char>(unescape_next);
+                // Set unescape flag.
+                unescape_next = false;
             }
         }
 

@@ -26,7 +26,7 @@ public:
     /// \param port The serial port to communicate over.
     /// \param baud The baud rate of the serial connection.
     ///
-    communicator(std::string port, unsigned int baud);
+    communicator(std::string port, unsigned int baud, unsigned int data_bits = 8, unsigned int parity_bits = 0, unsigned int stop_bits = 1);
     ~communicator();
 
     // METHODS
