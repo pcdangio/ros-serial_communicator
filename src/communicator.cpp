@@ -574,6 +574,8 @@ bool communicator::rx(unsigned char* buffer, unsigned int length)
         std::cout << std::hex << static_cast<unsigned int>(buf[i]) << "\t";
     }
     std::cout << std::endl << std::endl;
+    delete [] buf;
+    return false;
 
     // Block read until length bytes have been satisfied after escapements.
     unsigned int current_length = 0;
