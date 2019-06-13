@@ -559,24 +559,8 @@ void communicator::tx(unsigned char *buffer, unsigned int length)
         communicator::m_serial_port->write(buffer, length);
     }
 }
-#include <iostream>
 bool communicator::rx(unsigned char* buffer, unsigned int length)
 {
-    unsigned long b_a = communicator::m_serial_port->available();
-    if(b_a == 0)
-    {
-        return false;
-    }
-    unsigned char* buf = new unsigned char[b_a];
-    communicator::m_serial_port->read(buf, b_a);
-    for(int i = 0; i < b_a; i++)
-    {
-        std::cout << std::hex << static_cast<unsigned int>(buf[i]) << "\t";
-    }
-    std::cout << std::endl << std::endl;
-    delete [] buf;
-    return false;
-
     // Block read until length bytes have been satisfied after escapements.
     unsigned int current_length = 0;
     while(current_length < length)
