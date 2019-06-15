@@ -561,6 +561,8 @@ void communicator::tx(unsigned char *buffer, unsigned int length)
 }
 bool communicator::rx(unsigned char* buffer, unsigned int length)
 {
+    // Create global flag for unescaping the next byte, even across different read segments.
+    bool unescape_next = false;
     // Block read until length bytes have been satisfied after escapements.
     unsigned int current_length = 0;
     while(current_length < length)
@@ -575,7 +577,6 @@ bool communicator::rx(unsigned char* buffer, unsigned int length)
             return false;
         }
         // Read through the temporary buffer and extract bytes into the actual buffer.
-        bool unescape_next = false;
         for(unsigned int i = 0; i < remaining_length; i++)
         {
             if(temp_buffer[i] == communicator::m_escape_byte)
