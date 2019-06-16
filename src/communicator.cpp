@@ -381,7 +381,7 @@ void communicator::spin_rx()
         // Draft and send a receipt message outside of the typical outbound/tx_queue.
         // Receipt messages do not need to be tracked.
         unsigned char receipt[12];
-        // Copy header, sequence, receipt, id, and priority back into receipt.
+        // Copy header(1), sequence(4), receipt(1), id(2), and priority(1) back into receipt.  Then add zero data length (2) and checksum (1).
         std::memcpy(receipt, packet, 9);
         // Update the receipt field.
         if(checksum_ok)
